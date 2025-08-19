@@ -1,0 +1,75 @@
+📄 Documentation technique – Plugin Étudiant Folders
+1. Tables utilisées
+Ce plugin n’ajoute aucune table personnalisée dans la base de données.
+Il utilise les tables WordPress natives suivantes :
+
+Table	Utilisation
+wp_posts	Stocke les dossiers étudiants (post_type = etudiant_folder)
+wp_postmeta	Stocke les métadonnées des dossiers (ef_assigned_users, ef_assigned_professeurs, etc.)
+wp_users	Stocke les comptes utilisateurs (étudiants, professeurs, administrateurs)
+wp_usermeta	Stocke les rôles et capacités des utilisateurs
+wp_options	Stocke éventuellement les paramètres liés aux dépendances (ex : AWS SDK si ajouté)
+
+2. Hooks utilisés
+Hooks d’actions (add_action)
+Hook	Localisation	Description
+init	etudiant-folders.php	Ajoute les capacités personnalisées aux rôles professeur et administrator.
+plugins_loaded	etudiant-folders.php	Instancie les classes Etudiant_Folders_Admin et Etudiant_Folders_Front.
+wp_enqueue_scripts	class-etudiant-folders-front.php	Enregistre et charge la feuille de style CSS du frontend.
+
+Hooks de shortcodes (add_shortcode)
+Shortcode	Localisation	Description
+[etudiant_folders]	class-etudiant-folders-front.php	Affiche la liste des dossiers et fichiers d’un utilisateur connecté (étudiant).
+[dossiers_professeur]	class-etudiant-folders-front.php	Affiche la liste des dossiers attribués à un professeur connecté.
+
+3. Fonctions personnalisées
+Fonctions internes aux classes
+Fonction	Classe	Description
+__construct()	Etudiant_Folders_Front	Enregistre les shortcodes et l’appel CSS frontend.
+enqueue_assets()	Etudiant_Folders_Front	Charge la feuille de style du plugin côté public.
+render()	Etudiant_Folders_Front	Génère la vue HTML des dossiers d’un étudiant connecté.
+render_professeur_folders()	Etudiant_Folders_Front	Génère la vue HTML des dossiers attribués à un professeur connecté.
+__construct()	S3_Client	Initialise la connexion au service S3/Backblaze B2 avec clés API.
+upload_file()	S3_Client	Upload un fichier vers le bucket S3 défini.
+list_files()	S3_Client	Liste les fichiers d’un dossier donné dans S3.
+get_file_url()	S3_Client	Génère une URL temporaire (presigned) de téléchargement.
+get_public_url()	S3_Client	Génère une URL publique directe vers un fichier.
+
+Fonctions utilitaires
+Fonction	Localisation	Description
+ef_get_user_folders()	includes/helpers.php	Récupère les dossiers attribués à un utilisateur donné (ID).
+
+4. Types de contenus personnalisés (CPT)
+Nom interne : etudiant_folder
+
+Stockage : Table wp_posts (post_type = etudiant_folder)
+
+Métadonnées associées :
+
+ef_assigned_users → Liste des IDs d’étudiants assignés (sérialisée)
+
+ef_assigned_professeurs → Liste des IDs de professeurs assignés (sérialisée)
+
+5. Capacités personnalisées
+Ajoutées aux rôles professeur et administrator :
+
+ef_manage_folders
+
+read_etudiant_folder
+
+edit_etudiant_folder
+
+edit_etudiant_folders
+
+edit_published_etudiant_folders
+
+publish_etudiant_folders
+
+delete_etudiant_folder
+
+delete_published_etudiant_folders
+
+(Administrateur uniquement) edit_others_etudiant_folders, delete_others_etudiant_folders
+
+6. Dépendances externes
+AWS SDK for PHP (via Composer) pour communication avec S3 / Backblaze B2.

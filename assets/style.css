@@ -1,0 +1,81 @@
+/* Conteneur principal des dossiers — affiché en grille fluide */
+.ef-folders-container {
+  display: flex; /* Affichage en flexbox pour mise en ligne des dossiers */
+  flex-wrap: wrap; /* Permet le retour à la ligne des blocs si trop larges */
+  gap: 20px; /* Espace entre les dossiers */
+  margin: 20px 0; /* Marge en haut et en bas */
+}
+
+/* Bloc de chaque dossier individuel */
+.ef-folder {
+  border: 1px solid #ccc; /* Bordure grise autour du bloc */
+  padding: 15px; /* Espace intérieur */
+  flex: 1; /* Prend l'espace disponible */
+  min-width: 250px; /* Taille minimale */
+  max-width: 100%; /* Ne dépasse jamais 100% */
+  box-sizing: border-box; /* Inclut le padding dans la largeur */
+  background: #fff; /* Fond blanc */
+  border-radius: 8px; /* Coins arrondis */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Ombre légère autour */
+}
+
+/* Titre du dossier */
+.ef-folder-title {
+  font-size: 1.2rem; /* Taille du texte plus grande */
+  margin-bottom: 10px; /* Espace sous le titre */
+  border-bottom: 1px solid #eee; /* Ligne grise en dessous */
+  padding-bottom: 5px; /* Espace entre texte et ligne */
+}
+
+/* Liste des fichiers (ul) */
+.ef-file-list {
+  list-style: none; /* Pas de puces */
+  margin: 0;
+  padding: 5px; /* Espace intérieur */
+  min-height: 50px; /* Hauteur minimale pour visualiser la zone */
+  border: 1px dashed #aaa; /* Bordure en pointillés pour zone de drop */
+}
+
+/* Fichier individuel dans la liste */
+.ef-file {
+  background: #f5f5f5; /* Fond gris clair */
+  margin: 5px 0; /* Espace vertical entre les fichiers */
+  padding: 5px; /* Espace intérieur */
+  cursor: none; /* Curseur "déplacement" */
+  border-radius: 4px; /* Coins arrondis */
+  font-size: 0.9rem; /* Texte légèrement réduit */
+  color: #333; /* Couleur du texte */
+
+  /* Pour forcer les longs noms de fichiers à se couper proprement */
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  max-width: 100%;
+}
+
+/* Liens dans les fichiers */
+.ef-file a {
+  color: #0073aa; /* Bleu WordPress */
+  text-decoration: none; /* Pas de soulignement */
+  display: block; /* Clique sur tout le bloc */
+}
+
+/* Liens au survol */
+.ef-file a:hover {
+  color: #005177; /* Bleu plus foncé */
+  text-decoration: underline; /* Ajoute soulignement au survol */
+}
+
+/* Message de dossier vide */
+.ef-empty {
+  font-style: italic; /* Texte en italique */
+  color: #666; /* Gris moyen */
+}
+
+/* Adaptation responsive pour petits écrans (ex : mobile) */
+@media (max-width: 600px) {
+  .ef-folder {
+    flex: 1 1 100%; /* Prend toute la largeur */
+    padding: 10px; /* Réduit le padding */
+  }
+}
